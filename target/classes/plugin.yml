@@ -1,0 +1,7 @@
+name: AklizReboot
+main: com.ulticraft.aklizreboot.AklizReboot
+version: 1.0
+commands:
+  akliz:
+    description: The Base command for Akliz Reboot
+    aliases: ak
