@@ -1,6 +1,9 @@
 package com.ulticraft.aklizreboot;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,17 +23,36 @@ public class AklizReboot extends JavaPlugin
 		config = new ConfigurationFile(this);
 		setup = true;
 		
-		if(getConfig().getString(Data.CONNECTION_ID).equals(Data.DEFAULT_ID))
+		if(!getDataFolder().exists())
+		{
+			getDataFolder().mkdirs();
+		}
+		
+		if(!new File(getDataFolder(), "config.yml").exists())
+		{
+			try
+			{
+				new File(getDataFolder(), "config.yml").createNewFile();
+				config.saveConfig();
+			} 
+			
+			catch(IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		if(config.getDataConnectionId().equals(Data.DEFAULT_ID))
 		{
 			setup = false;
 		}
 		
-		if(getConfig().getString(Data.CONNECTION_USERNAME).equals(Base64.encodeBytes(getConfig().getString(Data.DEFAULT_USERNAME).getBytes())))
+		if(config.getDataConnectionUsername().equals(Base64.encodeBytes(getConfig().getString(Data.DEFAULT_USERNAME).getBytes())))
 		{
 			setup = false;
 		}
 		
-		if(getConfig().getString(Data.CONNECTION_PASSWORD).equals(Base64.encodeBytes(getConfig().getString(Data.DEFAULT_PASSWORD).getBytes())))
+		if(config.getDataConnectionPassword().equals(Base64.encodeBytes(getConfig().getString(Data.DEFAULT_PASSWORD).getBytes())))
 		{
 			setup = false;
 		}
